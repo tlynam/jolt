@@ -5,45 +5,61 @@
 
   <%= link_to 'Purcahse Jolt!', new_sale_path, class: "btn btn-success btn-lg", id: "purchase_button" %>
 
-<div class="table-responsive">
-  <table class="table" id="sale_stats">
-    <thead>
-      <th>Units Sold</th>
-      <th>Units Shipped</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td id="units_sold"><%= Sale.all.pluck(:units).sum %></td>
-        <td id="units_shipped"><%= Sale.shipped.pluck(:units).sum %></td>
-      </tr>
-    </tbody>
-  </table>
 </div>
 
-<h1>Sales</h1>
-<div class="table-responsive">
-  <table class="table" id="sale_names">
-    <thead>
-      <th>First Name</th>
-      <th>Quantity</th>
-      <th>City</th>
-      <th>Country</th>
-    </thead>
-    <tbody>
-      <% @sales.each do |sale| %>
-      <tr>
-        <td><%= sale.first_name %></td>
-        <td><%= sale.units %></td>
-        <td><%= sale.city %></td>
-        <td><%= sale.country %></td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+<div class="col-sm-4 col-xs-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h1 class="panel-title">Sale Stats</h1>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table" id="sale_stats">
+          <thead>
+            <th>Units Sold</th>
+            <th>Units Shipped</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="units_sold"><%= Sale.all.pluck(:units).sum %></td>
+              <td id="units_shipped"><%= Sale.shipped.pluck(:units).sum %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
-</br>
-<%= link_to 'Purcahse Jolt!', new_sale_path %>
+<div class="col-xs-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h1 class="panel-title">Sale Details</h1>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table" id="sale_names">
+          <thead>
+            <th>First Name</th>
+            <th>Quantity</th>
+            <th>City</th>
+            <th>Country</th>
+          </thead>
+          <tbody>
+            <% @sales.each do |sale| %>
+            <tr>
+              <td><%= sale.first_name %></td>
+              <td><%= sale.units %></td>
+              <td><%= sale.city %></td>
+              <td><%= sale.country %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="//js.pusher.com/2.2/pusher.min.js"></script>
 <script>

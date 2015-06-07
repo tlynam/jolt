@@ -7,6 +7,7 @@
       <th>Quantity</th>
       <th>City</th>
       <th>Country</th>
+      <th>Shipped?</th>
     </thead>
     <tbody>
       <% @sales.each do |sale| %>
@@ -15,6 +16,7 @@
         <td><%= sale.units %></td>
         <td><%= sale.city %></td>
         <td><%= sale.country %></td>
+        <td><%= sale.shipped ? 'Yes' : 'Pending' %></td>
       </tr>
       <% end %>
     </tbody>

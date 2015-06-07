@@ -6,6 +6,8 @@ class Sale < ActiveRecord::Base
 
   validate :check_cc_date
 
+  scope :unshipped, ->{ where shipped: false }
+
   def check_cc_date
     month_str, year_str = self.credit_card_date.split("/")[0],
                           self.credit_card_date.split("/")[1]
@@ -25,6 +27,10 @@ class Sale < ActiveRecord::Base
     if date < Date.today
       return errors.add(:base, 'Credit Card Expiration Date must be current month or later')
     end
+  end
+
+  def self.ship_sales
+    unshipped.update_all(shipped: true)
   end
 
 end

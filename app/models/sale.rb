@@ -33,4 +33,37 @@ class Sale < ActiveRecord::Base
     unshipped.update_all(shipped: true)
   end
 
+  def self.create_sale
+    units = rand(1..25)
+    first_name = %w(Todd Dave Morgan Rachel Jordan Lakshmi Amol Eberly Dan Janny).sample
+    last_name = %w(Lynam Backus Liu Wedlake Muramoto Leong Lane).sample
+    address = ['123 Water Rd', '2005 43rd Ave E', '9606 Wharf St', '5216 Ravenna Ave E',
+              '4221 E Blaine St', 'One Boundary Lane'].sample
+    address2 = [nil, 'Unit C', 'Apt 202'].sample
+    city = ['Edmonds', 'Seattle', 'Santa Clara', 'San Jose', 'San Francisco'].sample
+    zip = [98020, 98112, 98101, 95123, 95112].sample
+    country = ['USA', 'Canada', 'China', 'Mexico', 'Sierra Leone', 'England'].sample
+    cc_number = rand(100000000000000..999999999999999)
+    cc_expiration = "#{rand(1..12)}/#{Date.today.year + rand(1..5)}"
+    cc_ccv = rand(100..999)
+
+    sale = Sale.new(units: units, first_name: first_name, last_name: last_name, address: address,
+                    address2: address2, city: city, zip: zip, country: country,
+                    credit_card_number: cc_number, credit_card_date: cc_expiration,
+                    credit_card_ccv: cc_ccv)
+    sale.save!
+  end
+
+  def update_sales_feed
+    Pusher['sales_channel'].trigger('new_sale', {
+      message: {
+        first_name: self.first_name,
+        units: self.units,
+        city: self.city,
+        country: self.country,
+        shipped: self.shipped
+      }
+    })
+  end
+
 end

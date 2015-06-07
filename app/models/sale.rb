@@ -9,6 +9,7 @@ class Sale < ActiveRecord::Base
   after_create :update_sales_feed
 
   scope :unshipped, ->{ where shipped: false }
+  scope :shipped, ->{ where shipped: true }
 
   def check_cc_date
     month_str, year_str = self.credit_card_date.split("/")[0],
@@ -59,6 +60,8 @@ class Sale < ActiveRecord::Base
   def update_sales_feed
     Pusher['sales_channel'].trigger('new_sale', {
       message: {
+        units_sold: Sale.all.pluck(:units).sum,
+        units_shipped: Sale.shipped.pluck(:units).sum,
         first_name: self.first_name,
         units: self.units,
         city: self.city,

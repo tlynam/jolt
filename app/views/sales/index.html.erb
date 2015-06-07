@@ -1,7 +1,23 @@
-<h1>Sales</h1>
+<h1>Sale Stats</h1>
 
 <div class="table-responsive">
-  <table class="table">
+  <table class="table" id="sale_stats">
+    <thead>
+      <th>Units Sold</th>
+      <th>Units Shipped</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="units_sold"><%= Sale.all.pluck(:units).sum %></td>
+        <td id="units_shipped"><%= Sale.shipped.pluck(:units).sum %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h1>Sales</h1>
+<div class="table-responsive">
+  <table class="table" id="sale_names">
     <thead>
       <th>First Name</th>
       <th>Quantity</th>
@@ -38,7 +54,10 @@
 
   channel.bind('new_sale', function(data) {
     // alert(data.message);
-    var salesTable = $('.table').find('tbody')
+    $('#units_sold').text(data.message.units_sold)
+    $('#units_shipped').text(data.message.units_shipped)
+
+    $('#sale_names').find('tbody')
       .append($('<tr>')
         .append($('<td>')
           .text(data.message.first_name)

@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20150604033853) do
     t.integer  "zip",                limit: 4,                   null: false
     t.string   "country",            limit: 255,                 null: false
     t.integer  "credit_card_number", limit: 8,                   null: false
-    t.date     "credit_card_date",                               null: false
+    t.string   "credit_card_date",   limit: 255,                 null: false
     t.integer  "credit_card_ccv",    limit: 4,                   null: false
     t.boolean  "shipped",            limit: 1,   default: false, null: false
     t.datetime "created_at",                                     null: false

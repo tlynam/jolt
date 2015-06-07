@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Jolt</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+  <head>
+    <title>Jolt</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar-collapse bs-navbar-collapse collapse" aria-expanded="false">
+        <div class="navbar-header">
+          <%= link_to image_tag("jolt_cola.png", size: "150x120"), root_url %>
+        </div>
+      </nav>
+    </header>
 
-<%= yield %>
+    <%= yield %>
 
-</body>
+  </body>
 </html>

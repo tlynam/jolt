@@ -32,10 +32,6 @@ class Sale < ActiveRecord::Base
     end
   end
 
-  def self.ship_sales
-    unshipped.update_all(shipped: true)
-  end
-
   def self.create_sale
     units = rand(1..25)
     first_name = %w(Todd Dave Morgan Rachel Jordan Lakshmi Amol Eberly Dan Janny).sample
@@ -61,12 +57,23 @@ class Sale < ActiveRecord::Base
     Pusher['sales_channel'].trigger('new_sale', {
       message: {
         units_sold: Sale.all.pluck(:units).sum,
-        units_shipped: Sale.shipped.pluck(:units).sum,
         first_name: self.first_name,
         units: self.units,
         city: self.city,
         country: self.country,
         shipped: self.shipped
+      }
+    })
+  end
+
+  def self.ship_sales
+    unshipped.update_all(shipped: true)
+  end
+
+  def self.update_shipping_stats
+    Pusher['sales_channel'].trigger('new_shipment', {
+      message: {
+        units_shipped: Sale.shipped.pluck(:units).sum
       }
     })
   end

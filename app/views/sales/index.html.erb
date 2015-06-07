@@ -53,7 +53,6 @@
   var channel = pusher.subscribe('sales_channel');
 
   channel.bind('new_sale', function(data) {
-    // alert(data.message);
     $('#units_sold').text(data.message.units_sold)
     $('#units_shipped').text(data.message.units_shipped)
 
@@ -72,5 +71,9 @@
           .text(data.message.country)
         )
       )
+  });
+
+  channel.bind('new_shipment', function(data) {
+    $('#units_shipped').text(data.message.units_shipped)
   });
 </script>

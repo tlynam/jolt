@@ -7,7 +7,6 @@
       <th>Quantity</th>
       <th>City</th>
       <th>Country</th>
-      <th>Shipped?</th>
     </thead>
     <tbody>
       <% @sales.each do |sale| %>
@@ -16,7 +15,6 @@
         <td><%= sale.units %></td>
         <td><%= sale.city %></td>
         <td><%= sale.country %></td>
-        <td><%= sale.shipped ? 'Yes' : 'Pending' %></td>
       </tr>
       <% end %>
     </tbody>
@@ -25,3 +23,35 @@
 
 </br>
 <%= link_to 'Purcahse Jolt!', new_sale_path %>
+
+<script src="//js.pusher.com/2.2/pusher.min.js"></script>
+<script>
+  // Enable pusher logging - don't include this in production
+  Pusher.log = function(message) {
+    if (window.console && window.console.log) {
+      window.console.log(message);
+    }
+  };
+
+  var pusher = new Pusher('dbeefee1fadf19b8ac8c');
+  var channel = pusher.subscribe('sales_channel');
+
+  channel.bind('new_sale', function(data) {
+    // alert(data.message);
+    var salesTable = $('.table').find('tbody')
+      .append($('<tr>')
+        .append($('<td>')
+          .text(data.message.first_name)
+        )
+        .append($('<td>')
+          .text(data.message.units)
+        )
+        .append($('<td>')
+          .text(data.message.city)
+        )
+        .append($('<td>')
+          .text(data.message.country)
+        )
+      )
+  });
+</script>

@@ -6,6 +6,8 @@ class Sale < ActiveRecord::Base
 
   validate :check_cc_date
 
+  after_create :update_sales_feed
+
   scope :unshipped, ->{ where shipped: false }
 
   def check_cc_date

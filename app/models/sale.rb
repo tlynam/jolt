@@ -19,6 +19,10 @@ class Sale < ActiveRecord::Base
   end
 
   def check_cc_date
+    if self.credit_card_date == nil
+      return errors.add(:base, 'Credit Card Expiration Date must be valid numbers')
+    end
+
     month_str, year_str = self.credit_card_date.split("/")[0],
                           self.credit_card_date.split("/")[1]
     month_str = month_str[1] if month_str[0] == "0"

@@ -21,6 +21,8 @@ class Sale < ActiveRecord::Base
   def check_cc_date
     month_str, year_str = self.credit_card_date.split("/")[0],
                           self.credit_card_date.split("/")[1]
+    month_str = month_str[1] if month_str[0] == "0"
+
     begin
       month = Integer(month_str)
       year = Integer(year_str)

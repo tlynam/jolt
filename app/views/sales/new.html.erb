@@ -51,7 +51,13 @@
           </div>
         </div>
         <div class="field form-group">
-          <%= f.label :zip, class: "col-sm-2 control-label" %>
+          <%= f.label :state, "State/Providence", class: "col-sm-2 control-label" %>
+          <div class="col-sm-2 col-xs-3">
+            <%= f.text_field :state, class: "form-control" %>
+          </div>
+        </div>
+        <div class="field form-group">
+          <%= f.label :zip, "Zip/Postal Code", class: "col-sm-2 control-label" %>
           <div class="col-sm-2 col-xs-3">
             <%= f.text_field :zip, class: "form-control" %>
           </div>

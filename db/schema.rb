@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150604033853) do
+ActiveRecord::Schema.define(version: 20150608062254) do
 
   create_table "sales", force: :cascade do |t|
     t.integer  "units",              limit: 4,                   null: false
@@ -20,7 +20,8 @@ ActiveRecord::Schema.define(version: 20150604033853) do
     t.string   "address",            limit: 255,                 null: false
     t.string   "address2",           limit: 255
     t.string   "city",               limit: 255,                 null: false
-    t.integer  "zip",                limit: 4,                   null: false
+    t.string   "state",              limit: 255
+    t.integer  "zip",                limit: 4
     t.string   "country",            limit: 255,                 null: false
     t.integer  "credit_card_number", limit: 8,                   null: false
     t.string   "credit_card_date",   limit: 255,                 null: false

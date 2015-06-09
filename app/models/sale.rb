@@ -2,7 +2,7 @@ class Sale < ActiveRecord::Base
   validates_presence_of :units, :first_name, :last_name, :address, :city,
     :country, :credit_card_number, :credit_card_date, :credit_card_ccv
 
-  validates_numericality_of :units, :zip, :credit_card_number, :credit_card_ccv
+  validates_numericality_of :units, :credit_card_number, :credit_card_ccv
 
   validate :check_cc_date
 

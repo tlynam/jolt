@@ -1,6 +1,7 @@
 class SalesController < ApplicationController
 
   def index
+    @title = 'Jolt Cola Sales'
     @sales = Sale.all
     @hash = Gmaps4rails.build_markers(@sales) do |sale, marker|
       marker.lat sale.latitude
@@ -9,6 +10,7 @@ class SalesController < ApplicationController
   end
 
   def new
+    @title = 'Purchase Your Jolt Cola'
     @sale = Sale.new
   end
 

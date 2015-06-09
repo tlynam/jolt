@@ -34,6 +34,17 @@
 <div class="col-xs-12">
   <div class="panel panel-default">
     <div class="panel-heading">
+      <h1 class="panel-title">Geographical Shipments</h1>
+    </div>
+    <div class="panel-body">
+      <div id="map" style='width: 100%; height: 600px;'></div>
+    </div>
+  </div>
+</div>
+
+<div class="col-xs-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
       <h1 class="panel-title">Sale Details</h1>
     </div>
     <div class="panel-body">
@@ -63,12 +74,19 @@
 
 <script src="//js.pusher.com/2.2/pusher.min.js"></script>
 <script>
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
+
   // Enable pusher logging - don't include this in production
-  Pusher.log = function(message) {
-    if (window.console && window.console.log) {
-      window.console.log(message);
-    }
-  };
+  // Pusher.log = function(message) {
+  //   if (window.console && window.console.log) {
+  //     window.console.log(message);
+  //   }
+  // };
 
   var pusher = new Pusher('dbeefee1fadf19b8ac8c');
   var channel = pusher.subscribe('sales_channel');
@@ -96,5 +114,14 @@
 
   channel.bind('new_shipment', function(data) {
     $('#units_shipped').text(data.message.units_shipped)
+  });
+
+  channel.bind('update_map', function(data) {
+    // handler = Gmaps.build('Google');
+    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+      markers = handler.addMarkers(data.message.marker_data);
+      handler.bounds.extendWith(markers);
+      handler.fitMapToBounds();
+    });
   });
 </script>

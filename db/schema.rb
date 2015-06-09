@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(version: 20150608062254) do
     t.boolean  "shipped",            limit: 1,   default: false, null: false
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
+    t.float    "latitude",           limit: 24,  default: 0.0,   null: false
+    t.float    "longitude",          limit: 24,  default: 0.0,   null: false
   end
 
 end

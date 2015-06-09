@@ -11,6 +11,13 @@ class Sale < ActiveRecord::Base
   scope :unshipped, ->{ where shipped: false }
   scope :shipped, ->{ where shipped: true }
 
+  geocoded_by :build_address
+  after_validation :geocode
+
+  def build_address
+    [self.city, self.state, self.country].compact.join(', ')
+  end
+
   def check_cc_date
     month_str, year_str = self.credit_card_date.split("/")[0],
                           self.credit_card_date.split("/")[1]
@@ -39,17 +46,46 @@ class Sale < ActiveRecord::Base
     address = ['123 Water Rd', '2005 43rd Ave E', '9606 Wharf St', '5216 Ravenna Ave E',
               '4221 E Blaine St', 'One Boundary Lane'].sample
     address2 = [nil, 'Unit C', 'Apt 202'].sample
-    city = ['Edmonds', 'Seattle', 'Santa Clara', 'San Jose', 'San Francisco'].sample
     zip = [98020, 98112, 98101, 95123, 95112].sample
-    country = ['USA', 'Canada', 'China', 'Mexico', 'Sierra Leone', 'England'].sample
+
+    #data for maps
+    city_data = [
+      ['Edmonds', 'USA', 'Washington'],
+      ['Seattle', 'USA'],
+      ['Santa Clara', 'USA', 'California'],
+      ['San Francisco', 'USA'],
+      ['Mexico City', 'Mexico'],
+      ['Warsaw', 'Poland'],
+      ['Moscow', 'Russia'],
+      ['Shanghai', 'China'],
+      ['Jakarta', 'Indonesia'],
+      ['Paris', 'France'],
+      ['London', 'England'],
+      ['Honolulu', 'USA'],
+      ['New York City', 'USA'],
+      ['Miami', 'USA'],
+      ['Berlin', 'Germany'],
+      ['Tokyo', 'Japan'],
+      ['San Paulo', 'Brazil'],
+      ['Sydney', 'Austrailia'],
+      ['Johannesburg', 'South Africa'],
+      ['Tripoli', 'Libya'],
+      ['Bombay', 'India'],
+      ['Santiago', 'Chile']
+    ].sample
+
+    city = city_data[0]
+    country = city_data[1]
+    state = city_data[2]
+
     cc_number = rand(100000000000000..999999999999999)
     cc_expiration = "#{rand(1..12)}/#{Date.today.year + rand(1..5)}"
     cc_ccv = rand(100..999)
 
-    sale = Sale.new(units: units, first_name: first_name, last_name: last_name, address: address,
-                    address2: address2, city: city, zip: zip, country: country,
-                    credit_card_number: cc_number, credit_card_date: cc_expiration,
-                    credit_card_ccv: cc_ccv)
+    sale = Sale.new(units: units, first_name: first_name, last_name: last_name,
+                    address: address, address2: address2, city: city, state: state,
+                    zip: zip, country: country, credit_card_number: cc_number,
+                    credit_card_date: cc_expiration, credit_card_ccv: cc_ccv)
     sale.save!
   end
 
@@ -68,6 +104,20 @@ class Sale < ActiveRecord::Base
 
   def self.ship_sales
     unshipped.update_all(shipped: true)
+    update_map
+  end
+
+  def self.update_map
+    marker_data = Gmaps4rails.build_markers(Sale.all) do |sale, marker|
+      marker.lat sale.latitude
+      marker.lng sale.longitude
+    end
+
+    Pusher['sales_channel'].trigger('update_map', {
+      message: {
+        marker_data: marker_data
+      }
+    })
   end
 
   def self.update_shipping_stats

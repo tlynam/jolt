@@ -6,6 +6,12 @@ Rails.application.routes.draw do
   root 'sales#index'
 
   resources :sales, only: [:index, :new, :create]
+  resources :sales do
+    collection do
+      get 'simulate'
+      get 'delete_all'
+    end
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

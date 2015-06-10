@@ -3,8 +3,9 @@
 
   <%= image_tag("jolt_revolt.jpg", size: "300x400") %><br>
 
-  <%= link_to 'Purcahse Jolt!', new_sale_path, class: "btn btn-success btn-lg", id: "purchase_button" %>
-
+  <%= link_to 'Purcahse Jolt!', new_sale_path, class: "btn btn-success btn-lg", id: "purchase_button" %><br>
+  <%= link_to 'Simulate Sales', simulate_sales_path, class: "btn btn-warning btn-lg", id: "purchase_button" %>
+  <%= link_to 'Delete Sales', delete_all_sales_path, class: "btn btn-danger btn-lg", id: "purchase_button" %>
 </div>
 
 <div class="col-sm-4 col-xs-12">

@@ -24,6 +24,16 @@ class SalesController < ApplicationController
     end
   end
 
+  def simulate
+    SimulateSalesJob.perform_later
+    redirect_to sales_path
+  end
+
+  def delete_all
+    Sale.all.delete_all
+    redirect_to sales_path
+  end
+
   private
   def sale_params
     params.require(:sale).permit :id, :units, :first_name, :last_name, :address,

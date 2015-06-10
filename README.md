@@ -27,4 +27,4 @@ rake db:schema:load
 
 # Tests
 
-You can run the MiniTest test with: rake test
+You can run the MiniTest tests with: rake test

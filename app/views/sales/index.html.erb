@@ -5,31 +5,12 @@
 
   <%= link_to 'Purcahse Jolt!', new_sale_path, class: "btn btn-success btn-lg", id: "purchase_button" %><br>
   <%= link_to 'Simulate Sales', simulate_sales_path, class: "btn btn-warning btn-lg", id: "purchase_button" %>
-  <%= link_to 'Delete Sales', delete_all_sales_path, class: "btn btn-danger btn-lg", id: "purchase_button" %>
-</div>
+  <%= link_to 'Delete Sales', delete_all_sales_path, class: "btn btn-danger btn-lg", id: "purchase_button" %><br>
 
-<div class="col-sm-4 col-xs-12">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h1 class="panel-title">Sale Stats</h1>
-    </div>
-    <div class="panel-body">
-      <div class="table-responsive">
-        <table class="table" id="sale_stats">
-          <thead>
-            <th>Units Sold</th>
-            <th>Units Shipped</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td id="units_sold"><%= Sale.all.pluck(:units).sum %></td>
-              <td id="units_shipped"><%= Sale.shipped.pluck(:units).sum %></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+  <h3>
+  <div id="units_sold">Sold: <%= Sale.all.pluck(:units).sum %></div>
+  <div id="units_shipped">Shipped: <%= Sale.shipped.pluck(:units).sum %></div>
+  </h3>
 </div>
 
 <div class="col-xs-12">

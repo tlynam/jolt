@@ -25,7 +25,7 @@ class SalesController < ApplicationController
   end
 
   def simulate
-    SimulateSalesJob.perform_later
+    Sale.simulate_sales
     redirect_to sales_path
   end
 

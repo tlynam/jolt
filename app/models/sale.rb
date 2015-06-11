@@ -134,4 +134,13 @@ class Sale < ActiveRecord::Base
     })
   end
 
+  def self.simulate_sales(sleep_period: 0)
+    rand(3..10).times do
+      create_sale
+    end
+    sleep sleep_period #Add delay to prevent map from reloading too often
+    ship_sales
+    update_shipping_stats
+  end
+
 end
